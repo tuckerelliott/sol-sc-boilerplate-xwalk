@@ -1,10 +1,50 @@
 {
+  "project": "Edge Delivery Services",
   "plugins": [
     {
-      "id": "aemedit",
-      "title": "Edit",
-      "environments": [ "dev", "preview", "live" ],
-      "event": "aemedit"
+      "id": "library",
+      "title": "Library",
+      "environments": [
+        "edit"
+      ],
+      "url": "https://main--sol-sc-boilerplate--tuckerelliott.hlx.live/tools/sidekick/library.html",
+      "includePaths": [
+        "**.docx**"
+      ]
+    },
+    {
+      "id": "generate-variations",
+      "title": "Generate Variations",
+      "url": "https://experience.adobe.com/aem/generate-variations",
+      "passConfig": true,
+      "environments": ["edit"],
+      "includePaths": ["**.docx**"]
+    },
+    {
+      "id": "asset-library",
+      "title": "AEM Assets Library",
+      "environments": [
+        "edit"
+      ],
+      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html?rail=false",
+      "isPalette": true,
+      "includePaths": [
+        "**.docx**"
+      ],
+      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:800px; height: calc(100vh - 60px)"
+    },
+    {
+      "id": "asset-library2",
+      "title": "My Assets",
+      "environments": [
+        "edit"
+      ],
+      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html",
+      "isPalette": true,
+      "includePaths": [
+        "**.docx**"
+      ],
+      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
     }
   ]
 }
