@@ -211,8 +211,8 @@
     "id": "content-fragment",
     "fields": [
       {
-        "component": "text-input",
-        "name": "text",
+        "component": "text",
+        "name": "url",
         "value": "",
         "label": "Path",
         "valueType": "string"
