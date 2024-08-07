@@ -1,24 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 export default async function decorate(block) {
-  const aempublishurl = 'https://publish-p99452-e916802.adobeaemcloud.com';
-  const aemauthorurl = 'https://author-p99452-e916802.adobeaemcloud.com';
-  const persistedquery = '/graphql/execute.json/aem-demo-assets/native-app-adventure';
-  // const offerpath = '/content/dam/aem-demo-assets/en/adventures/bali-surf-camp/bali-surf-camp';
   const variationname = 'main';
-  const root = block.querySelector(':scope div:nth-child(1) > div');
   const url = block.querySelector(':scope div:nth-child(1) > div').innerHTML.trim();
-  //const offerpath = block.querySelector(':scope div:nth-child(1) > div').innerHTML.trim();
-  // const offerpath = block.querySelector(':scope div:nth-child(1) > div a').innerHTML.trim();
-  // const variationname = block.querySelector(':scope div:nth-child(2) > div').innerHTML.trim();
-
-  /*
-  const url = window.location && window.location.origin && window.location.origin.includes('author')
-    ? `${aemauthorurl}${persistedquery};apath=${offerpath};variation=${variationname};ts=${Math.random() * 1000}`
-    : `${aempublishurl}${persistedquery};apath=${offerpath};variation=${variationname};ts=${Math.random() * 1000}`;
-  const options = { credentials: 'include' };
-*/
-  console.log(root);
   console.log(url);
+  console.log(error.cause);
 
   const cfReq = await fetch(url)
     .then((response) => response.json())
