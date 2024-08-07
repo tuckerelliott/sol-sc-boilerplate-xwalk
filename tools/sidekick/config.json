@@ -1,5 +1,5 @@
 {
-  "project": "Edge Delivery Services",
+  "project": "Sol SC Boilerplate Xwalk",
   "plugins": [
     {
       "id": "library",
@@ -7,7 +7,7 @@
       "environments": [
         "edit"
       ],
-      "url": "https://main--sol-sc-boilerplate--tuckerelliott.hlx.live/tools/sidekick/library.html",
+      "url": "https://main--sol-sc-boilerplate-xwalk--tuckerelliott.hlx.live/tools/sidekick/library.html",
       "includePaths": [
         "**.docx**"
       ]
@@ -32,19 +32,6 @@
         "**.docx**"
       ],
       "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:800px; height: calc(100vh - 60px)"
-    },
-    {
-      "id": "asset-library2",
-      "title": "My Assets",
-      "environments": [
-        "edit"
-      ],
-      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html",
-      "isPalette": true,
-      "includePaths": [
-        "**.docx**"
-      ],
-      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
     }
   ]
 }
