@@ -86,7 +86,7 @@ main .carousel-wrapper > :last-child button {
   padding: 0;
   margin: 5px;
   border-radius: 5px;
-  background-color: var(--highlight-background-color);
+  background-color: var(--link-color);
 }
 
 main .carousel-wrapper > :last-child button.selected {
