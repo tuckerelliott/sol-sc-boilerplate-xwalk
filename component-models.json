@@ -206,7 +206,19 @@
         "label": "Embed"
       }
     ]
-  },  
+  },
+  {
+    "id": "content-fragment",
+    "fields": [
+      {
+        "component": "text-input",
+        "name": "text",
+        "value": "",
+        "label": "Path",
+        "valueType": "string"
+      }
+    ]
+  },    
   {
     "id": "blockquote",
     "fields": [
