@@ -14,7 +14,10 @@ main .carousel {
 main .carousel picture {
   position: absolute;
   z-index: -1;
-  inset: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   box-sizing: border-box;
 }
 
@@ -66,26 +69,26 @@ main .carousel-wrapper {
   max-width: unset;
 }
 
-main .carousel-wrapper .carousel-buttons {
+main .carousel-wrapper > :last-child {
   text-align: center;
   margin-top: 0;
-  position: relative;
+  position: absolute;
   display: flex;
   right: 0;
   left: 0;
   justify-content: center;
 }
 
-main .carousel-buttons button {
+main .carousel-wrapper > :last-child button {
   display: block;
   height: 10px;
   width: 10px;
   padding: 0;
   margin: 5px;
   border-radius: 5px;
-  background-color: var(--link-color);
+  background-color: var(--highlight-background-color);
 }
 
-main .carousel-buttons button.selected {
+main .carousel-wrapper > :last-child button.selected {
   background-color: var(--link-color);
 }
