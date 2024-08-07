@@ -1,34 +1,34 @@
 
 
-.banner-content {
+.content-fragment {
     position: relative;
     /* border: #717171 0.2px solid; */
     width: 100%;
-    height: 200px;
+    height: 100%;
     display: flex;
     justify-content: space-between;
     background-color: #fff;
 }
 
-.banner-content p {
+.content-fragment p {
   margin: 0;
 }
 
 @media (width >= 600px) {
-    .banner-content {
+    .content-fragment {
         width: 1170px;
-        height: 200px;
+        height: 100%;
         margin: 55px;
     }
 
-    .banner1300x435 .banner-content {
+    .banner1300x435 .content-fragment {
       width: 1300px;
       height: 435px;
     }
 
 }
 
-.banner-content .banner-detail {
+.content-fragment .banner-detail {
     width: 870px;
     box-sizing: border-box;
     height: 200px;
@@ -39,23 +39,23 @@
     color: #fff;
   }
 
-  .banner1300x435 .banner-content .banner-detail {
+  .banner1300x435 .content-fragment .banner-detail {
     height: 435px;
   }
 
   /*
   @media (width >= 600px) {
-    .banner-content .banner-detail {
+    .content-fragment .banner-detail {
         padding: 56px 60px 60px;
     }
 
-   .banner1300x435 .banner-content .banner-detail  {
+   .banner1300x435 .content-fragment .banner-detail  {
       padding: 150px 60px 60px;
       height: 435px;
   }
 }
 */
-  .banner-content .banner-detail .headline {
+  .content-fragment .banner-detail .headline {
     font-size: 36px;
     font-weight: 900;
     line-height: 36px;
@@ -63,20 +63,20 @@
     margin: 0;
   }
 
-  .banner1300x435 .banner-content .banner-detail .headline {
+  .banner1300x435 .content-fragment .banner-detail .headline {
     font-size: 48px;
     line-height: 48px;
     margin: 0;
   }
 
   @media (width >= 600px) {
-    .banner1300x435 .banner-content .banner-detail .headline {
+    .banner1300x435 .content-fragment .banner-detail .headline {
       font-size: 48px;
       line-height: 48px;
     }
   } 
 
-  .banner-content .banner-detail .pretitle {
+  .content-fragment .banner-detail .pretitle {
     font-size: 36px;
     font-weight: 400;
     line-height: 30px;
@@ -84,12 +84,12 @@
     margin: 0;
   }
 
-  .banner1300x435 .banner-content .banner-detail .pretitle {
+  .banner1300x435 .content-fragment .banner-detail .pretitle {
     font-size: 48px;
     line-height: 48px;
   }
 
-  .banner-content .banner-detail .detail {
+  .content-fragment .banner-detail .detail {
     font-size: 12px;
     opacity: 1;
     font-weight: 400;
@@ -98,16 +98,16 @@
     margin: 0;
   }
 
-  .banner1300x435 .banner-content .banner-detail .detail {
+  .banner1300x435 .content-fragment .banner-detail .detail {
     font-size: 18px;
     line-height: 72px; }
 
-  .banner-content .banner-logo {
+  .content-fragment .banner-logo {
     display: none;
     }
 
   @media (width >= 600px) {
-  .banner-content .banner-logo {
+  .content-fragment .banner-logo {
     display: block;
     width: 300px;
     background-image: url("/icons/wknd-logo-dk.svg");
@@ -116,5 +116,127 @@
     background-size: 191px 53px;
     background-color: yellow;
   }
+}
+
+
+#adventure {
+  background-color: white;
+  white-space: pre;
+  margin: 25px;
+}
+
+.content-fragment-wrapper{
+   display: flex;
+   height: 100%;
+   position: relative;
+   font-size: 16px
+} 
+
+section:nth-child(1) {
+  flex: 1;
+}
+
+section:nth-child(2) {
+  position: absolute;
+  padding-left: 25px;
+  top: 20px;
+  left: 50px;
+  right: 50px;
+  bottom: 40px;
+  background-color: rgb(0 0 0 / 40%)
+}
+
+section:nth-child(3) {
+  position: absolute;
+  padding-left: 25px;
+  top: 80px;
+  left: 50px;
+  right: 50px;
+  bottom: 10px;
+  color: white;
+  font-size: 16px;
+}
+
+section:nth-child(4) {
+  position: absolute;
+  padding-left: 25px;
+  top: 300px;
+  left: 50px;
+  right: 50px;
+  bottom: 10px;
+  color: yellow;
+}
+
+section:nth-child(5) {
+  position: absolute;
+  padding-left: 25px;
+  top: 350px;
+  left: 50px;
+  right: 50px;
+  bottom: 10px;
+  color: yellow;
+}
+
+section:nth-child(6) {
+  position: absolute;
+  padding-left: 25px;
+  top: 400px;
+  left: 50px;
+  right: 50px;
+  bottom: 10px;
+  color: yellow;
+}
+
+section:nth-child(7) {
+  position: absolute;
+  padding-left: 25px;
+  top: 450px;
+  left: 50px;
+  right: 50px;
+  bottom: 10px;
+  color: yellow;
+}
+
+section:nth-child(8) {
+  position: absolute;
+  padding-left: 25px;
+  top: 260px;
+  left: 50px;
+  right: 50px;
+  bottom: 10px;
+  color: white;
+}
+
+section:nth-child(8) p {
+ line-height: 1.5em;
+ font-size: 16px;
+}
+
+#slug {
+  visibility: hidden;
+}
+
+#adventure .text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: #ebebeb;
+  padding: 3.5em 2em 2em;
+}
+
+img {
+  width: 1200px;
+}
+
+.content-fragment-wrapper h3 {
+  color: white;
+  font-size: 24px;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.content-fragment-wrapper h2 {
+  color: white;  
+  font-size: 20px;
+  text-shadow: 1px 1px 2px #000
 }
 

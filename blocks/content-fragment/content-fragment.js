@@ -41,10 +41,10 @@ document.getElementById(adventureDiv.id).innerHTML += "<section>" + "Difficulty:
 
 const groupSize = response.data.adventureList.items[0].groupSize;
 document.getElementById(adventureDiv.id).innerHTML += "<section>" + "Group Size: " + groupSize + "</section>";
-
+/*
 const tripItinerary= response.data.adventureList.items[0].itinerary.html;
 document.getElementById(adventureDiv.id).innerHTML += "<section>" + "Itinerary: </br>" + tripItinerary + "</section>";
-
+*/
 })
 .catch(error => {
   console.log('Error fetching data:', error);
