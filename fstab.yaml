@@ -1,6 +1,6 @@
 mountpoints:
-  /: https://adobe.sharepoint.com/:f:/r/sites/Solution-LedMSCTeam/Shared%20Documents/General/Edge%20Delivery%20Projects/sol-sc-boilerplate-xwalk
-#  /:
-#    url: "https://author-p130360-e1272151.adobeaemcloud.com/bin/franklin.delivery/adobe-rnd/aem-boilerplate-xwalk/main"
-#    type: "markup"
-#    suffix: ".html"
+  #  /: https://adobe.sharepoint.com/:f:/r/sites/Solution-LedMSCTeam/Shared%20Documents/General/Edge%20Delivery%20Projects/sol-sc-boilerplate-xwalk
+  /:
+    url: "https://author-p99452-e916802.adobeaemcloud.com/bin/franklin.delivery/tuckerelliott/sol-sc-boilerplate-xwalk/main"
+    type: "markup"
+    suffix: ".html"
