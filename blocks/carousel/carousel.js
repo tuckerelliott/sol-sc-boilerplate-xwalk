@@ -1,4 +1,3 @@
-
 export function updateButtons(activeSlide) {
   const block = activeSlide.closest('.block');
   const buttons = block.closest('.carousel-wrapper').querySelector('.carousel-buttons');
