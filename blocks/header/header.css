@@ -57,6 +57,10 @@ header nav a:any-link {
   color: currentcolor;
 }
 
+header nav a.button:any-link {
+  background-color: #FFF;
+}
+
 /* hamburger */
 header nav .nav-hamburger {
   grid-area: hamburger;
