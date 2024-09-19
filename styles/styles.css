@@ -224,3 +224,15 @@ main .section.light,
 main .section.highlight {
   background-color: var(--light-color);
 }
+
+ol {
+  list-style-type: decimal;
+}
+
+ol > li > ol {
+  list-style-type: lower-alpha;
+}
+
+ol > li > ol > li > ol {
+  list-style-type: lower-roman;
+}
