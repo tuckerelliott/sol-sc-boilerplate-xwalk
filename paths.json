@@ -1,6 +1,6 @@
 {
   "mappings": [
-    "/content/sol-sc-boilerplate-xwalk/:/",
-    "/content/sol-sc-boilerplate-xwalk/configuration:/.helix/config.json"
+    "/content/basedemo-xwalk/:/",
+    "/content/basedemo-xwalk//configuration:/.helix/config.json"
   ]
 }
