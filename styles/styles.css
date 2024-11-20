@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-:root {
+ :root {
   /* colors */
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
@@ -18,6 +18,10 @@
   --light-color: #eee;
   --dark-color: #ccc;
   --text-color: black;
+  --background-color: #ffffff;
+  --overlay-background-color: #eeeeee;
+  --highlight-background-color: #cccccc;
+  --background-color-light: #a5610f;
 
   /* fonts */
   --body-font-family: roboto, roboto-fallback;
@@ -28,6 +32,9 @@
   --body-font-size-m: 22px;
   --body-font-size-s: 18px;
   --body-font-size-xs: 16px;
+  --body-font-size-xxl: 13px;
+  --body-font-size-xl: 12px;
+  --body-font-size-l: 11.9px;
 
   /* heading sizes */
   --heading-font-size-xxl: 48px;
