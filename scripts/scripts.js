@@ -16,7 +16,7 @@ import {
   loadScript,
   toCamelCase,
   toClassName,
-} from "./aem.js";
+} from './aem.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 const AUDIENCES = {
@@ -67,8 +67,7 @@ export function moveInstrumentation(from, to) {
     [...from.attributes]
       .map(({ nodeName }) => nodeName)
       .filter(
-        (attr) =>
-          attr.startsWith("data-aue-") || attr.startsWith("data-richtext-")
+        (attr) => attr.startsWith('data-aue-') || attr.startsWith('data-richtext-')
       )
   );
 }
@@ -77,10 +76,10 @@ export function moveInstrumentation(from, to) {
  * load fonts.css and set a session storage flag
  */
 async function loadFonts() {
-  await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
+  await loadCSS('${window.hlx.codeBasePath}/styles/fonts.css');
   try {
-    if (!window.location.hostname.includes("localhost"))
-      sessionStorage.setItem("fonts-loaded", "true");
+    if (!window.location.hostname.includes('localhost'))
+      sessionStorage.setItem('fonts-loaded', 'true');
   } catch (e) {
     // do nothing
   }
@@ -95,7 +94,7 @@ function buildAutoBlocks() {
     // TODO: add auto block, if needed
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error("Auto Blocking failed", error);
+    console.error('Auto Blocking failed', error);
   }
 }
 
@@ -120,9 +119,9 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   // Add below snippet early in the eager phase
   if (
-    getMetadata("experiment") ||
-    Object.keys(getAllMetadata("campaign")).length ||
-    Object.keys(getAllMetadata("audience")).length
+    getMetadata('experiment') ||
+    Object.keys(getAllMetadata('campaign')).length ||
+    Object.keys(getAllMetadata('audience')).length
   ) {
     // eslint-disable-next-line import/no-relative-packages
     const { loadEager: runEager } = await import(
@@ -130,18 +129,18 @@ async function loadEager(doc) {
     );
     await runEager(document, { audiences: AUDIENCES }, pluginContext);
   }
-  document.documentElement.lang = "en";
+  document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
-  const main = doc.querySelector("main");
+  const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
-    document.body.classList.add("appear");
+    document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
-    if (window.innerWidth >= 900 || sessionStorage.getItem("fonts-loaded")) {
+    if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
       loadFonts();
     }
   } catch (e) {
@@ -154,28 +153,28 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
-  const main = doc.querySelector("main");
+  const main = doc.querySelector('main');
   await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector("header"));
-  loadFooter(doc.querySelector("footer"));
+  loadHeader(doc.querySelector('header'));
+  loadFooter(doc.querySelector('footer'));
 
-  loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  loadCSS('${window.hlx.codeBasePath}/styles/lazy-styles.css');
   loadFonts();
 
-  sampleRUM("lazy");
-  sampleRUM.observe(main.querySelectorAll("div[data-block-name]"));
-  sampleRUM.observe(main.querySelectorAll("picture > img"));
+  sampleRUM('lazy');
+  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
+  sampleRUM.observe(main.querySelectorAll('picture > img'));
 
   // Add below snippet at the end of the lazy phase
   if (
-    getMetadata("experiment") ||
-    Object.keys(getAllMetadata("campaign")).length ||
-    Object.keys(getAllMetadata("audience")).length
+    getMetadata('experiment') ||
+    Object.keys(getAllMetadata('campaign')).length ||
+    Object.keys(getAllMetadata('audience')).length
   ) {
     // eslint-disable-next-line import/no-relative-packages
     const { loadLazy: runLazy } = await import(
