@@ -29,3 +29,46 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+/* chris */
+.cards.light > ul > li {
+  background-color: #FBEAEB;
+  color: #2F3C7E;
+}
+.cards.light a.button:any-link {
+  background-color: #2F3C7E;
+}
+
+.cards.dark > ul > li {
+  background-color: #101820;
+  color: white;
+}
+.cards.dark a.button:any-link {
+  background-color: #ca2909;
+}
+
+.cards.across > ul {
+  display: block;
+} 
+.cards.across > ul > li {
+  display: grid;
+  grid-gap: 10px;
+  grid: 'image body';
+  grid-template-columns: 320px auto;
+  margin-bottom: 50px;
+}
+.cards > ul > li img {
+  aspect-ratio: 1 / 1;
+}
+
+.cards.across .cards-card-image { grid-area: image; }
+.cards.across .cards-card-body { grid-area: body; }
+
+@media (max-width: 600px) {
+  .cards > ul > li img {
+    aspect-ratio: 1 / 1;
+  }
+  .cards.across  > ul > li {
+    display: block;
+  }
+}
