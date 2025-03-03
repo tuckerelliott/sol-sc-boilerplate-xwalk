@@ -23,7 +23,7 @@ export default function decorate(block) {
 
       const adventureTitle = response.data.adventureList.items[0].title;
       document.getElementById(adventureDiv.id).innerHTML += `<section><h3>${adventureTitle}</h3></section>`;
-
+const erf = response.data.
       const adventureDesc = response.data.adventureList.items[0].description.plaintext;
       document.getElementById(adventureDiv.id).innerHTML += `<section>${adventureDesc}</section>`;
 

@@ -231,7 +231,12 @@ main .section.light,
 main .section.highlight {
   background-color: var(--light-color);
 }
-
+main .section.light {
+  background-color: #93aaf1;
+}
+main .section.dark {
+  background-color: #333333;
+}
 ol {
   list-style-type: decimal;
 }
