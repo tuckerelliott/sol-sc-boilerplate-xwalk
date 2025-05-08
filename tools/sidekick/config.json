@@ -1,5 +1,7 @@
 {
   "project": "Sol SC Boilerplate Xwalk",
+  "editUrlLabel": "AEM Editor",
+  "editUrlPattern": "{{contentSourceUrl}}{{pathname}}?cmd=open",
   "plugins": [
     {
       "id": "library",
@@ -17,8 +19,12 @@
       "title": "Generate Variations",
       "url": "https://experience.adobe.com/aem/generate-variations",
       "passConfig": true,
-      "environments": ["edit"],
-      "includePaths": ["**.docx**"]
+      "environments": [
+        "edit"
+      ],
+      "includePaths": [
+        "**.docx**"
+      ]
     },
     {
       "id": "asset-library",
