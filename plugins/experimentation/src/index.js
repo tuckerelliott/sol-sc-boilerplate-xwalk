@@ -17,18 +17,18 @@ export const DEFAULT_OPTIONS = {
 
   // Audiences related properties
   audiences: {},
-  audiencesMetaTagPrefix: 'audience',
-  audiencesQueryParameter: 'audience',
+  audiencesMetaTagPrefix: "audience",
+  audiencesQueryParameter: "audience",
 
   // Campaigns related properties
-  campaignsMetaTagPrefix: 'campaign',
-  campaignsQueryParameter: 'campaign',
+  campaignsMetaTagPrefix: "campaign",
+  campaignsQueryParameter: "campaign",
 
   // Experimentation related properties
-  experimentsRoot: '/experiments',
-  experimentsConfigFile: 'manifest.json',
-  experimentsMetaTag: 'experiment',
-  experimentsQueryParameter: 'experiment',
+  experimentsRoot: "/experiments",
+  experimentsConfigFile: "manifest.json",
+  experimentsMetaTag: "experiment",
+  experimentsQueryParameter: "experiment",
 };
 
 /**
@@ -45,7 +45,11 @@ function isBot() {
  * @param {object} options the plugin options
  * @returns Returns the names of the resolved audiences, or `null` if no audience is configured
  */
-export async function getResolvedAudiences(applicableAudiences, options, context) {
+export async function getResolvedAudiences(
+  applicableAudiences,
+  options,
+  context
+) {
   if (!applicableAudiences.length || !Object.keys(options.audiences).length) {
     return null;
   }
@@ -61,13 +65,15 @@ export async function getResolvedAudiences(applicableAudiences, options, context
 
   // Otherwise, return the list of audiences that are resolved on the page
   const results = await Promise.all(
-    applicableAudiences
-      .map((key) => {
-        if (options.audiences[key] && typeof options.audiences[key] === 'function') {
-          return options.audiences[key]();
-        }
-        return false;
-      }),
+    applicableAudiences.map((key) => {
+      if (
+        options.audiences[key] &&
+        typeof options.audiences[key] === "function"
+      ) {
+        return options.audiences[key]();
+      }
+      return false;
+    })
   );
   return applicableAudiences.filter((_, i) => results[i]);
 }
@@ -83,15 +89,15 @@ async function replaceInner(path, main) {
     const resp = await fetch(path);
     if (!resp.ok) {
       // eslint-disable-next-line no-console
-      console.log('error loading content:', resp);
+      console.log("error loading content:", resp);
       return null;
     }
     const html = await resp.text();
     // parse with DOMParser to guarantee valid HTML, and no script execution(s)
-    const dom = new DOMParser().parseFromString(html, 'text/html');
+    const dom = new DOMParser().parseFromString(html, "text/html");
     // do not use replaceWith API here since this would replace the main reference
     // in scripts.js as well and prevent proper decoration of the sections/blocks
-    main.innerHTML = dom.querySelector('main').innerHTML;
+    main.innerHTML = dom.querySelector("main").innerHTML;
     return path;
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -126,9 +132,11 @@ function parseExperimentConfig(json, context) {
   try {
     json.settings.data.forEach((line) => {
       const key = context.toCamelCase(line.Name);
-      if (key === 'audience' || key === 'audiences') {
-        config.audiences = line.Value ? line.Value.split(',').map((str) => str.trim()) : [];
-      } else if (key === 'experimentName') {
+      if (key === "audience" || key === "audiences") {
+        config.audiences = line.Value
+          ? line.Value.split(",").map((str) => str.trim())
+          : [];
+      } else if (key === "experimentName") {
         config.label = line.Value;
       } else {
         config[key] = line.Value;
@@ -141,7 +149,7 @@ function parseExperimentConfig(json, context) {
     variantNames.forEach((variantName) => {
       variants[variantName] = {};
     });
-    let lastKey = 'default';
+    let lastKey = "default";
     json.experiences.data.forEach((line) => {
       let key = context.toCamelCase(line.Name);
       if (!key) key = lastKey;
@@ -150,9 +158,10 @@ function parseExperimentConfig(json, context) {
       vns.shift();
       vns.forEach((vn) => {
         const camelVN = context.toCamelCase(vn);
-        if (key === 'pages' || key === 'blocks') {
+        if (key === "pages" || key === "blocks") {
           variants[camelVN][key] = variants[camelVN][key] || [];
-          if (key === 'pages') variants[camelVN][key].push(new URL(line[vn]).pathname);
+          if (key === "pages")
+            variants[camelVN][key].push(new URL(line[vn]).pathname);
           else variants[camelVN][key].push(line[vn]);
         } else {
           variants[camelVN][key] = line[vn];
@@ -164,7 +173,7 @@ function parseExperimentConfig(json, context) {
     return config;
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.log('error parsing experiment config:', e, json);
+    console.log("error parsing experiment config:", e, json);
   }
   return null;
 }
@@ -175,16 +184,19 @@ function parseExperimentConfig(json, context) {
  * @returns `true` if it is valid, `false` otherwise
  */
 export function isValidExperimentationConfig(config) {
-  if (!config.variantNames
-    || !config.variantNames.length
-    || !config.variants
-    || !Object.values(config.variants).length
-    || !Object.values(config.variants).every((v) => (
-      typeof v === 'object'
-      && !!v.blocks
-      && !!v.pages
-      && (v.percentageSplit === '' || !!v.percentageSplit)
-    ))) {
+  if (
+    !config.variantNames ||
+    !config.variantNames.length ||
+    !config.variants ||
+    !Object.values(config.variants).length ||
+    !Object.values(config.variants).every(
+      (v) =>
+        typeof v === "object" &&
+        !!v.blocks &&
+        !!v.pages &&
+        (v.percentageSplit === "" || !!v.percentageSplit)
+    )
+  ) {
     return false;
   }
   return true;
@@ -209,7 +221,8 @@ function inferEmptyPercentageSplits(variants) {
     return newResult;
   }, 1);
   if (variantsWithoutPercentage.length) {
-    const missingPercentage = remainingPercentage / variantsWithoutPercentage.length;
+    const missingPercentage =
+      remainingPercentage / variantsWithoutPercentage.length;
     variantsWithoutPercentage.forEach((v) => {
       v.percentageSplit = missingPercentage.toFixed(4);
     });
@@ -227,15 +240,23 @@ function getConfigForInstantExperiment(
   experimentId,
   instantExperiment,
   pluginOptions,
-  context,
+  context
 ) {
-  const audience = context.getMetadata(`${pluginOptions.experimentsMetaTag}-audience`);
+  const audience = context.getMetadata(
+    `${pluginOptions.experimentsMetaTag}-audience`
+  );
   const config = {
     label: `Instant Experiment: ${experimentId}`,
-    audiences: audience ? audience.split(',').map(context.toClassName) : [],
-    status: context.getMetadata(`${pluginOptions.experimentsMetaTag}-status`) || 'Active',
-    startDate: context.getMetadata(`${pluginOptions.experimentsMetaTag}-start-date`),
-    endDate: context.getMetadata(`${pluginOptions.experimentsMetaTag}-end-date`),
+    audiences: audience ? audience.split(",").map(context.toClassName) : [],
+    status:
+      context.getMetadata(`${pluginOptions.experimentsMetaTag}-status`) ||
+      "Active",
+    startDate: context.getMetadata(
+      `${pluginOptions.experimentsMetaTag}-start-date`
+    ),
+    endDate: context.getMetadata(
+      `${pluginOptions.experimentsMetaTag}-end-date`
+    ),
     id: experimentId,
     variants: {},
     variantNames: [],
@@ -243,22 +264,26 @@ function getConfigForInstantExperiment(
 
   const nbOfVariants = Number(instantExperiment);
   const pages = Number.isNaN(nbOfVariants)
-    ? instantExperiment.split(',').map((p) => new URL(p.trim(), window.location).pathname)
+    ? instantExperiment
+        .split(",")
+        .map((p) => new URL(p.trim(), window.location).pathname)
     : new Array(nbOfVariants).fill(window.location.pathname);
 
-  const splitString = context.getMetadata(`${pluginOptions.experimentsMetaTag}-split`);
+  const splitString = context.getMetadata(
+    `${pluginOptions.experimentsMetaTag}-split`
+  );
   const splits = splitString
-    // custom split
-    ? splitString.split(',').map((i) => parseFloat(i) / 100)
-    // even split fallback
-    : [...new Array(pages.length)].map(() => 1 / (pages.length + 1));
+    ? // custom split
+      splitString.split(",").map((i) => parseFloat(i) / 100)
+    : // even split fallback
+      [...new Array(pages.length)].map(() => 1 / (pages.length + 1));
 
-  config.variantNames.push('control');
+  config.variantNames.push("control");
   config.variants.control = {
-    percentageSplit: '',
+    percentageSplit: "",
     pages: [window.location.pathname],
     blocks: [],
-    label: 'Control',
+    label: "Control",
   };
 
   pages.forEach((page, i) => {
@@ -272,7 +297,7 @@ function getConfigForInstantExperiment(
     };
   });
   inferEmptyPercentageSplits(Object.values(config.variants));
-  return (config);
+  return config;
 }
 
 /**
@@ -292,12 +317,16 @@ function getConfigForInstantExperiment(
  * @param {object} pluginOptions The plugin options
  * @returns {object} containing the experiment manifest
  */
-async function getConfigForFullExperiment(experimentId, pluginOptions, context) {
+async function getConfigForFullExperiment(
+  experimentId,
+  pluginOptions,
+  context
+) {
   let path;
   if (experimentId.includes(`/${pluginOptions.experimentsConfigFile}`)) {
     path = new URL(experimentId, window.location.origin).href;
     // eslint-disable-next-line no-param-reassign
-    [experimentId] = path.split('/').splice(-2, 1);
+    [experimentId] = path.split("/").splice(-2, 1);
   } else {
     path = `${pluginOptions.experimentsRoot}/${experimentId}/${pluginOptions.experimentsConfigFile}`;
   }
@@ -305,7 +334,7 @@ async function getConfigForFullExperiment(experimentId, pluginOptions, context) 
     const resp = await fetch(path);
     if (!resp.ok) {
       // eslint-disable-next-line no-console
-      console.log('error loading experiment config:', resp);
+      console.log("error loading experiment config:", resp);
       return null;
     }
     const json = await resp.json();
@@ -319,7 +348,9 @@ async function getConfigForFullExperiment(experimentId, pluginOptions, context) 
     config.manifest = path;
     config.basePath = `${pluginOptions.experimentsRoot}/${experimentId}`;
     inferEmptyPercentageSplits(Object.values(config.variants));
-    config.status = context.getMetadata(`${pluginOptions.experimentsMetaTag}-status`) || config.status;
+    config.status =
+      context.getMetadata(`${pluginOptions.experimentsMetaTag}-status`) ||
+      config.status;
     return config;
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -330,33 +361,47 @@ async function getConfigForFullExperiment(experimentId, pluginOptions, context) 
 
 function getDecisionPolicy(config) {
   const decisionPolicy = {
-    id: 'content-experimentation-policy',
-    rootDecisionNodeId: 'n1',
-    decisionNodes: [{
-      id: 'n1',
-      type: 'EXPERIMENTATION',
-      experiment: {
-        id: config.id,
-        identityNamespace: 'ECID',
-        randomizationUnit: 'DEVICE',
-        treatments: Object.entries(config.variants).map(([key, props]) => ({
-          id: key,
-          allocationPercentage: Number(props.percentageSplit) * 100,
-        })),
+    id: "content-experimentation-policy",
+    rootDecisionNodeId: "n1",
+    decisionNodes: [
+      {
+        id: "n1",
+        type: "EXPERIMENTATION",
+        experiment: {
+          id: config.id,
+          identityNamespace: "ECID",
+          randomizationUnit: "DEVICE",
+          treatments: Object.entries(config.variants).map(([key, props]) => ({
+            id: key,
+            allocationPercentage: Number(props.percentageSplit) * 100,
+          })),
+        },
       },
-    }],
+    ],
   };
   return decisionPolicy;
 }
 
-async function getConfig(experiment, instantExperiment, pluginOptions, context) {
+async function getConfig(
+  experiment,
+  instantExperiment,
+  pluginOptions,
+  context
+) {
   const usp = new URLSearchParams(window.location.search);
-  const [forcedExperiment, forcedVariant] = usp.has(pluginOptions.experimentsQueryParameter)
-    ? usp.get(pluginOptions.experimentsQueryParameter).split('/')
+  const [forcedExperiment, forcedVariant] = usp.has(
+    pluginOptions.experimentsQueryParameter
+  )
+    ? usp.get(pluginOptions.experimentsQueryParameter).split("/")
     : [];
 
   const experimentConfig = instantExperiment
-    ? await getConfigForInstantExperiment(experiment, instantExperiment, pluginOptions, context)
+    ? await getConfigForInstantExperiment(
+        experiment,
+        instantExperiment,
+        pluginOptions,
+        context
+      )
     : await getConfigForFullExperiment(experiment, pluginOptions, context);
 
   // eslint-disable-next-line no-console
@@ -372,30 +417,38 @@ async function getConfig(experiment, instantExperiment, pluginOptions, context) 
   experimentConfig.resolvedAudiences = await getResolvedAudiences(
     experimentConfig.audiences.map(context.toClassName),
     pluginOptions,
-    context,
+    context
   );
-  experimentConfig.run = (
+  experimentConfig.run =
     // experiment is active or forced
-    (['active', 'on', 'true'].includes(context.toClassName(experimentConfig.status)) || forcedExperiment)
+    (["active", "on", "true"].includes(
+      context.toClassName(experimentConfig.status)
+    ) ||
+      forcedExperiment) &&
     // experiment has resolved audiences if configured
-    && (!experimentConfig.resolvedAudiences || experimentConfig.resolvedAudiences.length)
+    (!experimentConfig.resolvedAudiences ||
+      experimentConfig.resolvedAudiences.length) &&
     // forced audience resolves if defined
-    && (!forcedAudience || experimentConfig.audiences.includes(forcedAudience))
-    && (!experimentConfig.startDate || new Date(experimentConfig.startDate) <= Date.now())
-    && (!experimentConfig.endDate || new Date(experimentConfig.endDate) > Date.now())
-  );
+    (!forcedAudience || experimentConfig.audiences.includes(forcedAudience)) &&
+    (!experimentConfig.startDate ||
+      new Date(experimentConfig.startDate) <= Date.now()) &&
+    (!experimentConfig.endDate ||
+      new Date(experimentConfig.endDate) > Date.now());
 
   window.hlx = window.hlx || {};
   window.hlx.experiment = experimentConfig;
 
   // eslint-disable-next-line no-console
-  console.debug('run', experimentConfig.run, experimentConfig.audiences);
+  console.debug("run", experimentConfig.run, experimentConfig.audiences);
   if (forcedVariant && experimentConfig.variantNames.includes(forcedVariant)) {
     experimentConfig.selectedVariant = forcedVariant;
   } else {
     // eslint-disable-next-line import/extensions
-    const { ued } = await import('./ued.js');
-    const decision = ued.evaluateDecisionPolicy(getDecisionPolicy(experimentConfig), {});
+    const { ued } = await import("./ued.js");
+    const decision = ued.evaluateDecisionPolicy(
+      getDecisionPolicy(experimentConfig),
+      {}
+    );
     experimentConfig.selectedVariant = decision.items[0].id;
   }
   return experimentConfig;
@@ -411,37 +464,53 @@ export async function runExperiment(document, options, context) {
   if (!experiment) {
     return false;
   }
-  const variants = context.getMetadata('instant-experiment')
-    || context.getMetadata(`${pluginOptions.experimentsMetaTag}-variants`);
+  const variants =
+    context.getMetadata("instant-experiment") ||
+    context.getMetadata(`${pluginOptions.experimentsMetaTag}-variants`);
   let experimentConfig;
   try {
-    experimentConfig = await getConfig(experiment, variants, pluginOptions, context);
+    experimentConfig = await getConfig(
+      experiment,
+      variants,
+      pluginOptions,
+      context
+    );
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error('Invalid experiment config.', err);
+    console.error("Invalid experiment config.", err);
   }
   if (!experimentConfig || !isValidExperimentationConfig(experimentConfig)) {
     // eslint-disable-next-line no-console
-    console.warn('Invalid experiment config. Please review your metadata, sheet and parser.');
+    console.warn(
+      "Invalid experiment config. Please review your metadata, sheet and parser."
+    );
     return false;
   }
 
   const usp = new URLSearchParams(window.location.search);
   const forcedVariant = usp.has(pluginOptions.experimentsQueryParameter)
-    ? usp.get(pluginOptions.experimentsQueryParameter).split('/')[1]
+    ? usp.get(pluginOptions.experimentsQueryParameter).split("/")[1]
     : null;
   if (!experimentConfig.run && !forcedVariant) {
     // eslint-disable-next-line no-console
-    console.warn('Experiment will not run. It is either not active or its configured audiences are not resolved.');
+    console.warn(
+      "Experiment will not run. It is either not active or its configured audiences are not resolved."
+    );
     return false;
   }
   // eslint-disable-next-line no-console
-  console.debug(`running experiment (${window.hlx.experiment.id}) -> ${window.hlx.experiment.selectedVariant}`);
+  console.debug(
+    `running experiment (${window.hlx.experiment.id}) -> ${window.hlx.experiment.selectedVariant}`
+  );
 
   if (experimentConfig.selectedVariant === experimentConfig.variantNames[0]) {
-    document.body.classList.add(`experiment-${context.toClassName(experimentConfig.id)}`);
-    document.body.classList.add(`variant-${context.toClassName(experimentConfig.selectedVariant)}`);
-    context.sampleRUM('experiment', {
+    document.body.classList.add(
+      `experiment-${context.toClassName(experimentConfig.id)}`
+    );
+    document.body.classList.add(
+      `variant-${context.toClassName(experimentConfig.selectedVariant)}`
+    );
+    context.sampleRUM("experiment", {
       source: experimentConfig.id,
       target: experimentConfig.selectedVariant,
     });
@@ -461,22 +530,34 @@ export async function runExperiment(document, options, context) {
   }
 
   // Fullpage content experiment
-  document.body.classList.add(`experiment-${context.toClassName(experimentConfig.id)}`);
+  document.body.classList.add(
+    `experiment-${context.toClassName(experimentConfig.id)}`
+  );
   let result;
   if (pages[index] !== currentPath) {
-    result = await replaceInner(pages[index], document.querySelector('main'));
+    result = await replaceInner(pages[index], document.querySelector("main"));
   } else {
     result = currentPath;
   }
   experimentConfig.servedExperience = result || currentPath;
   if (!result) {
     // eslint-disable-next-line no-console
-    console.debug(`failed to serve variant ${window.hlx.experiment.selectedVariant}. Falling back to ${experimentConfig.variantNames[0]}.`);
+    console.debug(
+      `failed to serve variant ${window.hlx.experiment.selectedVariant}. Falling back to ${experimentConfig.variantNames[0]}.`
+    );
   }
-  document.body.classList.add(`variant-${context.toClassName(result ? experimentConfig.selectedVariant : experimentConfig.variantNames[0])}`);
-  context.sampleRUM('experiment', {
+  document.body.classList.add(
+    `variant-${context.toClassName(
+      result
+        ? experimentConfig.selectedVariant
+        : experimentConfig.variantNames[0]
+    )}`
+  );
+  context.sampleRUM("experiment", {
     source: experimentConfig.id,
-    target: result ? experimentConfig.selectedVariant : experimentConfig.variantNames[0],
+    target: result
+      ? experimentConfig.selectedVariant
+      : experimentConfig.variantNames[0],
   });
   return result;
 }
@@ -488,25 +569,36 @@ export async function runCampaign(document, options, context) {
 
   const pluginOptions = { ...DEFAULT_OPTIONS, ...options };
   const usp = new URLSearchParams(window.location.search);
-  const campaign = (usp.has(pluginOptions.campaignsQueryParameter)
-    ? context.toClassName(usp.get(pluginOptions.campaignsQueryParameter))
-    : null)
-    || (usp.has('utm_campaign') ? context.toClassName(usp.get('utm_campaign')) : null);
+  const campaign =
+    (usp.has(pluginOptions.campaignsQueryParameter)
+      ? context.toClassName(usp.get(pluginOptions.campaignsQueryParameter))
+      : null) ||
+    (usp.has("utm_campaign")
+      ? context.toClassName(usp.get("utm_campaign"))
+      : null);
   if (!campaign) {
     return false;
   }
 
-  let audiences = context.getMetadata(`${pluginOptions.campaignsMetaTagPrefix}-audience`);
+  let audiences = context.getMetadata(
+    `${pluginOptions.campaignsMetaTagPrefix}-audience`
+  );
   let resolvedAudiences = null;
   if (audiences) {
-    audiences = audiences.split(',').map(context.toClassName);
-    resolvedAudiences = await getResolvedAudiences(audiences, pluginOptions, context);
+    audiences = audiences.split(",").map(context.toClassName);
+    resolvedAudiences = await getResolvedAudiences(
+      audiences,
+      pluginOptions,
+      context
+    );
     if (!!resolvedAudiences && !resolvedAudiences.length) {
       return false;
     }
   }
 
-  const allowedCampaigns = context.getAllMetadata(pluginOptions.campaignsMetaTagPrefix);
+  const allowedCampaigns = context.getAllMetadata(
+    pluginOptions.campaignsMetaTagPrefix
+  );
   if (!Object.keys(allowedCampaigns).includes(campaign)) {
     return false;
   }
@@ -523,16 +615,21 @@ export async function runCampaign(document, options, context) {
 
   try {
     const url = new URL(urlString);
-    const result = await replaceInner(url.pathname, document.querySelector('main'));
+    const result = await replaceInner(
+      url.pathname,
+      document.querySelector("main")
+    );
     window.hlx.campaign.servedExperience = result || window.location.pathname;
     if (!result) {
       // eslint-disable-next-line no-console
-      console.debug(`failed to serve campaign ${campaign}. Falling back to default content.`);
+      console.debug(
+        `failed to serve campaign ${campaign}. Falling back to default content.`
+      );
     }
     document.body.classList.add(`campaign-${campaign}`);
-    context.sampleRUM('campaign', {
+    context.sampleRUM("campaign", {
       source: window.location.href,
-      target: result ? campaign : 'default',
+      target: result ? campaign : "default",
     });
     return result;
   } catch (err) {
@@ -548,7 +645,9 @@ export async function serveAudience(document, options, context) {
   }
 
   const pluginOptions = { ...DEFAULT_OPTIONS, ...(options || {}) };
-  const configuredAudiences = context.getAllMetadata(pluginOptions.audiencesMetaTagPrefix);
+  const configuredAudiences = context.getAllMetadata(
+    pluginOptions.audiencesMetaTagPrefix
+  );
   if (!Object.keys(configuredAudiences).length) {
     return false;
   }
@@ -556,7 +655,7 @@ export async function serveAudience(document, options, context) {
   const audiences = await getResolvedAudiences(
     Object.keys(configuredAudiences).map(context.toClassName),
     pluginOptions,
-    context,
+    context
   );
   if (!audiences || !audiences.length) {
     return false;
@@ -577,16 +676,23 @@ export async function serveAudience(document, options, context) {
 
   try {
     const url = new URL(urlString);
-    const result = await replaceInner(url.pathname, document.querySelector('main'));
+    const result = await replaceInner(
+      url.pathname,
+      document.querySelector("main")
+    );
     window.hlx.audience.servedExperience = result || window.location.pathname;
     if (!result) {
       // eslint-disable-next-line no-console
-      console.debug(`failed to serve audience ${selectedAudience}. Falling back to default content.`);
+      console.debug(
+        `failed to serve audience ${selectedAudience}. Falling back to default content.`
+      );
     }
-    document.body.classList.add(audiences.map((audience) => `audience-${audience}`));
-    context.sampleRUM('audiences', {
+    document.body.classList.add(
+      audiences.map((audience) => `audience-${audience}`)
+    );
+    context.sampleRUM("audiences", {
       source: window.location.href,
-      target: result ? forcedAudience || audiences.join(',') : 'default',
+      target: result ? forcedAudience || audiences.join(",") : "default",
     });
     return result;
   } catch (err) {
@@ -605,9 +711,13 @@ window.hlx.patchBlockConfig?.push((config) => {
   }
 
   // The current experiment does not modify the block
-  if (experiment.selectedVariant === experiment.variantNames[0]
-    || !experiment.variants[experiment.variantNames[0]].blocks
-    || !experiment.variants[experiment.variantNames[0]].blocks.includes(config.blockName)) {
+  if (
+    experiment.selectedVariant === experiment.variantNames[0] ||
+    !experiment.variants[experiment.variantNames[0]].blocks ||
+    !experiment.variants[experiment.variantNames[0]].blocks.includes(
+      config.blockName
+    )
+  ) {
     return config;
   }
 
@@ -617,18 +727,23 @@ window.hlx.patchBlockConfig?.push((config) => {
     return config;
   }
 
-  let index = experiment.variants[experiment.variantNames[0]].blocks.indexOf('');
+  let index =
+    experiment.variants[experiment.variantNames[0]].blocks.indexOf("");
   if (index < 0) {
-    index = experiment.variants[experiment.variantNames[0]].blocks.indexOf(config.blockName);
+    index = experiment.variants[experiment.variantNames[0]].blocks.indexOf(
+      config.blockName
+    );
   }
   if (index < 0) {
-    index = experiment.variants[experiment.variantNames[0]].blocks.indexOf(`/blocks/${config.blockName}`);
+    index = experiment.variants[experiment.variantNames[0]].blocks.indexOf(
+      `/blocks/${config.blockName}`
+    );
   }
   if (index < 0) {
     return config;
   }
 
-  let origin = '';
+  let origin = "";
   let path;
   if (/^https?:\/\//.test(variant.blocks[index])) {
     const url = new URL(variant.blocks[index]);
@@ -637,12 +752,13 @@ window.hlx.patchBlockConfig?.push((config) => {
       origin = url.origin;
     }
     // Experimenting from a block path
-    if (url.pathname !== '/') {
+    if (url.pathname !== "/") {
       path = url.pathname;
     } else {
       path = `/blocks/${config.blockName}`;
     }
-  } else { // Experimenting from a different branch on the same branch
+  } else {
+    // Experimenting from a different branch on the same branch
     path = `/blocks/${variant.blocks[index]}`;
   }
   if (!origin && !path) {
@@ -668,9 +784,10 @@ function adjustedRumSamplingRate(checkpoint, options, context) {
         window.hlx.rum.weight,
         // … but limit it to the 10% sampling at max to avoid losing anonymization
         // and reduce burden on the backend
-        Math.max(pluginOptions.rumSamplingRate, MAX_SAMPLING_RATE),
+        Math.max(pluginOptions.rumSamplingRate, MAX_SAMPLING_RATE)
       );
-      window.hlx.rum.isSelected = (window.hlx.rum.random * window.hlx.rum.weight < 1);
+      window.hlx.rum.isSelected =
+        window.hlx.rum.random * window.hlx.rum.weight < 1;
       if (window.hlx.rum.isSelected) {
         context.sampleRUM(checkpoint, data);
       }
@@ -680,16 +797,23 @@ function adjustedRumSamplingRate(checkpoint, options, context) {
 }
 
 function adjustRumSampligRate(document, options, context) {
-  const checkpoints = ['audiences', 'campaign', 'experiment'];
-  if (context.sampleRUM.always) { // RUM v1.x
+  const checkpoints = ["audiences", "campaign", "experiment"];
+  if (context.sampleRUM.always) {
+    // RUM v1.x
     checkpoints.forEach((ck) => {
-      context.sampleRUM.always.on(ck, adjustedRumSamplingRate(ck, options, context));
+      context.sampleRUM.always.on(
+        ck,
+        adjustedRumSamplingRate(ck, options, context)
+      );
     });
-  } else { // RUM 2.x
-    document.addEventListener('rum', (event) => {
-      if (event.detail
-        && event.detail.checkpoint
-        && checkpoints.includes(event.detail.checkpoint)) {
+  } else {
+    // RUM 2.x
+    document.addEventListener("rum", (event) => {
+      if (
+        event.detail &&
+        event.detail.checkpoint &&
+        checkpoints.includes(event.detail.checkpoint)
+      ) {
         adjustedRumSamplingRate(event.detail.checkpoint, options, context);
       }
     });
@@ -713,15 +837,69 @@ export async function loadLazy(document, options, context) {
     ...(options || {}),
   };
   // do not show the experimentation pill on prod domains
-  if (window.location.hostname.endsWith('.live')
-    || (typeof options.isProd === 'function' && options.isProd())
-    || (options.prodHost
-      && (options.prodHost === window.location.host
-        || options.prodHost === window.location.hostname
-        || options.prodHost === window.location.origin))) {
+  if (
+    window.location.hostname.endsWith(".live") ||
+    (typeof options.isProd === "function" && options.isProd()) ||
+    (options.prodHost &&
+      (options.prodHost === window.location.host ||
+        options.prodHost === window.location.hostname ||
+        options.prodHost === window.location.origin))
+  ) {
     return;
   }
   // eslint-disable-next-line import/no-cycle
-  const preview = await import('./preview.js');
-  preview.default(document, pluginOptions, { ...context, getResolvedAudiences });
+  const preview = await import("./preview.js");
+  preview.default(document, pluginOptions, {
+    ...context,
+    getResolvedAudiences,
+  });
+
+  window.addEventListener("message", async (event) => {
+    // Handle Last-Modified request
+    if (event.data && event.data.type === "hlx:last-modified-request") {
+      const url = event.data.url;
+
+      try {
+        const response = await fetch(url, {
+          method: "HEAD",
+          cache: "no-store",
+          headers: {
+            "Cache-Control": "no-cache",
+          },
+        });
+
+        const lastModified = response.headers.get("Last-Modified");
+        console.log("Last-Modified header for", url, ":", lastModified);
+
+        event.source.postMessage(
+          {
+            type: "hlx:last-modified-response",
+            url: url,
+            lastModified: lastModified,
+            status: response.status,
+          },
+          event.origin
+        );
+      } catch (error) {
+        console.error("Error fetching Last-Modified header:", error);
+      }
+    }
+    // Handle experimentation config request
+    else if (event.data?.type === "hlx:experimentation-get-config") {
+      try {
+        const safeClone = JSON.parse(JSON.stringify(window.hlx));
+
+        event.source.postMessage(
+          {
+            type: "hlx:experimentation-config",
+            config: safeClone,
+            source: "index-js",
+          },
+          "*"
+        );
+      } catch (e) {
+        console.error("Error sending hlx config:", e);
+      }
+    }
+  });
 }

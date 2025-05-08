@@ -273,6 +273,7 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  import("../tools/sidekick/aem-experimentation.js");
   const main = doc.querySelector("main");
   await loadBlocks(main);
 
