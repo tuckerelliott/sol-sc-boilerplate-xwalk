@@ -274,6 +274,7 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   import("../tools/sidekick/aem-experimentation.js");
+  import("../tools/sidekick/aem-genai-variations.js");
   const main = doc.querySelector("main");
   await loadBlocks(main);
 

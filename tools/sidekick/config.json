@@ -51,6 +51,19 @@
         "**.docx**"
       ],
       "event": "aem-experimentation-sidekick"
+    },
+    {
+      "id": "aem-genai-variations",
+      "titleI18n": {
+        "en": "Generate with AI"
+      },
+      "environments": [
+        "preview"
+      ],
+      "includePaths": [
+        "**.docx**"
+      ],
+      "event": "aem-genai-variations-sidekick"
     }
   ]
 }
